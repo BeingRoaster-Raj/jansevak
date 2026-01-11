@@ -275,23 +275,23 @@ export default function About() {
             </div>
             
             <p className="text-lg leading-relaxed mb-4">
-              Jansevak is developed by <span className="font-bold text-yellow-300">Raj Anand</span>, 
-              a passionate developer who believes technology can drive positive change in society.
+              Jansevak is developed by <span className="font-bold text-yellow-300">Raj Anand & Ankit Kumar</span>, 
+              two passionate developer who believes technology can drive positive change in society.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              With experience in web development, data structures & algorithms, and hardware projects, 
-              Raj brings together technical skills and social impact ideas to build solutions that matter.
+              With experience in  <span className="font-bold text-yellow-300">Web Development, Data Structures & Algorithms, and Hardware Projects,</span> 
+              they combine their technical skills with social impact ideas to build solutions that truly matter. Their shared vision is to use technology to solve real-world    civic problems and empower communities.
             </p>
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                 <div className="text-3xl font-bold">5+</div>
-                <div className="text-sm">Projects</div>
+                <div className="text-sm">Projects Together</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                 <div className="text-3xl font-bold">3+</div>
-                <div className="text-sm">Technologies</div>
+                <div className="text-sm">Technologies Used</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                 <div className="text-3xl font-bold">∞</div>
