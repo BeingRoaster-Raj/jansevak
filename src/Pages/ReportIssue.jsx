@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import IssueCard from "../components/IssueCard"
 
 function ReportIssue() {
@@ -12,7 +13,8 @@ function ReportIssue() {
   const [photo, setPhoto] = useState(null)
   const [issues, setIssues] = useState([])
   const [loadingLocation, setLoadingLocation] = useState(false)
-  const [visibleCount, setVisibleCount] = useState(3) 
+  const [visibleCount, setVisibleCount] = useState(3)
+  const [photoPreview, setPhotoPreview] = useState(null)
 
   // Check if user is logged in
   const userId = localStorage.getItem("userId")
@@ -43,6 +45,7 @@ function ReportIssue() {
     const file = e.target.files[0]
     if (file) {
       setPhoto(file)
+      setPhotoPreview(URL.createObjectURL(file))
     }
   }
 
@@ -99,7 +102,7 @@ function ReportIssue() {
     data.append("description", formData.description)
     data.append("category", formData.category)
     data.append("location", formData.location)
-    data.append("userId", userId) // ✅ always include userId
+    data.append("userId", userId)
     if (photo) data.append("photo", photo)
 
     try {
@@ -122,6 +125,10 @@ function ReportIssue() {
       // Reset form
       setFormData({ title: "", description: "", category: "Other", location: "" })
       setPhoto(null)
+      setPhotoPreview(null)
+
+      // Success message
+      alert("✅ Issue reported successfully!")
     } catch (err) {
       console.error("❌ Error submitting issue:", err)
       alert("Failed to submit issue. Check console for details.")
@@ -131,137 +138,281 @@ function ReportIssue() {
   // 🚫 Block UI if not logged in
   if (!userId) {
     return (
-      <div className="p-6 max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl font-bold mb-4">🚫 Please log in</h2>
-        <p className="text-gray-600">You must log in before reporting an issue.</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md"
+        >
+          <div className="text-7xl mb-6">🚫</div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Please Log In</h2>
+          <p className="text-gray-600 text-lg">
+            You must log in before reporting an issue.
+          </p>
+        </motion.div>
       </div>
     )
   }
 
+  const categoryIcons = {
+    Garbage: "🗑️",
+    Road: "🚧",
+    Water: "💧",
+    "Street Lights": "💡",
+    Sewage: "🚰",
+    Other: "📢"
+  }
+
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      {/* Issue Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-xl p-6 mb-8"
-      >
-        <h2 className="text-xl font-bold mb-4">Report an Issue 📝</h2>
-
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Issue Title"
-          className="w-full border rounded-lg p-2 mb-3"
-          required
-        />
-
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Describe the issue..."
-          className="w-full border rounded-lg p-2 mb-3"
-          rows="3"
-          required
-        />
-
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          className="w-full border rounded-lg p-2 mb-3"
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-6 relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          className="absolute top-20 right-20 text-9xl"
         >
-          <option>Garbage</option>
-          <option>Road</option>
-          <option>Water</option>
-          <option>Other</option>
-        </select>
-
-        {/* Location */}
-        <div className="mb-3">
-          <button
-            type="button"
-            onClick={fetchLocation}
-            className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition"
-            disabled={loadingLocation}
-          >
-            {loadingLocation ? "Fetching Location..." : "📍 Use My Location"}
-          </button>
-          {formData.location && (
-            <p className="text-sm text-blue-600 mt-2">
-              Location: {formData.location}
-            </p>
-          )}
-        </div>
-
-        {/* File Upload (Custom Button) */}
-        <div className="mb-3">
-          <label
-            htmlFor="photo"
-            className="cursor-pointer bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition inline-block"
-          >
-            📷 Upload Photo
-          </label>
-          <input
-            id="photo"
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handlePhotoChange}
-            className="hidden"
-          />
-        </div>
-
-        {/* Preview */}
-        {photo && (
-          <img
-            src={URL.createObjectURL(photo)}
-            alt="Preview"
-            className="w-full h-28 object-cover rounded mb-3 shadow"
-          />
-        )}
-
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          📋
+        </motion.div>
+        <motion.div
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 5, repeat: Infinity }}
+          className="absolute bottom-20 left-20 text-9xl"
         >
-          Submit Issue
-        </button>
-      </form>
+          ✍️
+        </motion.div>
+      </div>
 
-      {/* Display Issues */}
-      <h2 className="text-lg font-bold mb-4">Recent Issues</h2>
-      {issues.length === 0 ? (
-        <p className="text-gray-500">No issues reported yet.</p>
-      ) : (
-        <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {issues.slice(0, visibleCount).map((issue) => (
-              <IssueCard
-                key={issue._id}
-                {...issue}
-                imageUrl={
-                  issue.imageUrl ? `http://localhost:5000${issue.imageUrl}` : null
-                }
-              />
-            ))}
+      <div className="max-w-5xl mx-auto relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-4">
+            Report an Issue
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Help improve your community by reporting civic issues
+          </p>
+        </motion.div>
+
+        {/* Issue Form */}
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          onSubmit={handleSubmit}
+          className="bg-white shadow-2xl rounded-3xl p-8 mb-12 border-2 border-purple-100"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <div className="text-4xl">📝</div>
+            <h2 className="text-2xl font-bold text-gray-800">Issue Details</h2>
           </div>
 
-          {/* Load More button */}
-          {visibleCount < issues.length && (
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={() => setVisibleCount(visibleCount + 3)}
-                className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition"
+          {/* Title */}
+          <div className="mb-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Issue Title <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="e.g., Broken street light on Main Road"
+              className="w-full border-2 border-gray-200 rounded-xl p-4 focus:border-blue-500 focus:outline-none transition-all"
+              required
+            />
+          </div>
+
+          {/* Description */}
+          <div className="mb-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Description <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Describe the issue in detail..."
+              className="w-full border-2 border-gray-200 rounded-xl p-4 focus:border-blue-500 focus:outline-none transition-all"
+              rows="4"
+              required
+            />
+          </div>
+
+          {/* Category */}
+          <div className="mb-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Category <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="w-full border-2 border-gray-200 rounded-xl p-4 focus:border-blue-500 focus:outline-none transition-all appearance-none cursor-pointer"
               >
-                Load More
+                <option>Garbage</option>
+                <option>Road</option>
+                <option>Water</option>
+                <option>Street Lights</option>
+                <option>Sewage</option>
+                <option>Other</option>
+              </select>
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-2xl pointer-events-none">
+                {categoryIcons[formData.category] || "📢"}
+              </div>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="mb-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Location
+            </label>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={fetchLocation}
+                className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg hover:shadow-xl font-semibold flex items-center gap-2"
+                disabled={loadingLocation}
+              >
+                <span className="text-xl">📍</span>
+                {loadingLocation ? "Fetching..." : "Use My Location"}
               </button>
             </div>
+            {formData.location && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-3 p-4 bg-blue-50 rounded-xl border-2 border-blue-200"
+              >
+                <p className="text-sm text-blue-800">
+                  <span className="font-semibold">📍 Location:</span> {formData.location}
+                </p>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Photo Upload */}
+          <div className="mb-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Upload Photo (Optional)
+            </label>
+            <label
+              htmlFor="photo"
+              className="cursor-pointer bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-4 rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all inline-flex items-center gap-2 shadow-lg hover:shadow-xl font-semibold"
+            >
+              <span className="text-xl">📷</span>
+              Choose Photo
+            </label>
+            <input
+              id="photo"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+          </div>
+
+          {/* Photo Preview */}
+          {photoPreview && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-6"
+            >
+              <p className="text-gray-700 font-semibold mb-2">Photo Preview:</p>
+              <div className="relative">
+                <img
+                  src={photoPreview}
+                  alt="Preview"
+                  className="w-full h-64 object-cover rounded-xl shadow-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPhoto(null)
+                    setPhotoPreview(null)
+                  }}
+                  className="absolute top-3 right-3 bg-red-500 text-white w-10 h-10 rounded-full hover:bg-red-600 transition-all shadow-lg"
+                >
+                  ✕
+                </button>
+              </div>
+            </motion.div>
           )}
-        </>
-      )}
+
+          {/* Submit Button */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl hover:shadow-2xl transition-all font-bold text-lg"
+          >
+            Submit Issue
+          </motion.button>
+        </motion.form>
+
+        {/* Display Issues */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold text-gray-800">Recent Issues</h2>
+            <div className="bg-purple-100 px-4 py-2 rounded-full">
+              <span className="font-semibold text-purple-700">{issues.length} Total</span>
+            </div>
+          </div>
+
+          {issues.length === 0 ? (
+            <div className="bg-white rounded-3xl shadow-xl p-12 text-center">
+              <div className="text-7xl mb-4">📭</div>
+              <p className="text-gray-500 text-lg">No issues reported yet.</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {issues.slice(0, visibleCount).map((issue, idx) => (
+                  <motion.div
+                    key={issue._id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                  >
+                    <IssueCard
+                      {...issue}
+                      imageUrl={
+                        issue.imageUrl ? `http://localhost:5000${issue.imageUrl}` : null
+                      }
+                    />
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Load More button */}
+              {visibleCount < issues.length && (
+                <div className="flex justify-center mt-8">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setVisibleCount(visibleCount + 3)}
+                    className="bg-gradient-to-r from-gray-700 to-gray-900 text-white px-8 py-4 rounded-xl hover:shadow-xl transition-all font-semibold"
+                  >
+                    Load More Issues
+                  </motion.button>
+                </div>
+              )}
+            </>
+          )}
+        </motion.div>
+      </div>
     </div>
   )
 }
