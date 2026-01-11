@@ -21,7 +21,7 @@ function ReportIssue() {
 
   // Fetch existing issues from backend on page load
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_ENDPOINT}/issues`)
+    fetch(`https://jansevak-2.onrender.com/api/issues`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch issues")
         return res.json()
@@ -106,7 +106,7 @@ function ReportIssue() {
     if (photo) data.append("photo", photo)
 
     try {
-      const res = await fetch("${import.meta.env.VITE_API_ENDPOINT}/issues", {
+      const res = await fetch(`https://jansevak-2.onrender.com/api/issues`, {
         method: "POST",
         body: data,
       })

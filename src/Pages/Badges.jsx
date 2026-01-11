@@ -19,7 +19,7 @@ export default function Badges() {
   ]
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/issues/count/${userId}`)
+    fetch(`${import.meta.env.VITE_API_ENDPOINT}/issues/count/${userId}`)
       .then((res) => res.json())
       .then((data) => {
         setContributions(data.contributions || 0)

@@ -12,7 +12,7 @@ function Reviews() {
 
   // 🔹 Fetch existing reviews
   useEffect(() => {
-    fetch("http://localhost:5000/api/reviews")
+    fetch(`https://jansevak-2.onrender.com/api/reviews`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch reviews")
         return res.json()
@@ -35,7 +35,7 @@ function Reviews() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/reviews", {
+      const res = await fetch(`https://jansevak-2.onrender.com/api/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, userId }),
