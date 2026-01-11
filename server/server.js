@@ -11,7 +11,7 @@ import adminRoutes from "./routes/admins.js"
 dotenv.config()
 const app = express()
 
-// ✅ Middleware should always come first
+// Middleware should always come first
 app.use(cors())
 app.use(express.json())
 
