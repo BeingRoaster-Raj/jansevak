@@ -11,7 +11,7 @@ export default function Navbar({ role, setRole }) {
       <div className="flex items-center gap-2">
         {/* Replace /logo.png with your logo file */}
         <img
-          src="/logo.png"
+          src="/jansevak-img.jpeg"
           alt="Jansevak Logo"
           className="w-10 h-10 object-contain"
         />
