@@ -21,7 +21,7 @@ function ReportIssue() {
 
   // Fetch existing issues from backend on page load
   useEffect(() => {
-    fetch("http://localhost:5000/api/issues")
+    fetch(`${import.meta.env.VITE_API_ENDPOINT}/issues`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch issues")
         return res.json()
@@ -106,7 +106,7 @@ function ReportIssue() {
     if (photo) data.append("photo", photo)
 
     try {
-      const res = await fetch("http://localhost:5000/api/issues", {
+      const res = await fetch("${import.meta.env.VITE_API_ENDPOINT}/issues", {
         method: "POST",
         body: data,
       })
