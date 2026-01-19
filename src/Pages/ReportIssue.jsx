@@ -280,7 +280,7 @@ function ReportIssue() {
                 className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg hover:shadow-xl font-semibold flex items-center gap-2"
                 disabled={loadingLocation}
               >
-                <span className="text-xl">📍</span>
+                <span className="text-xl"⛯</span>
                 {loadingLocation ? "Fetching..." : "Use My Location"}
               </button>
             </div>
@@ -291,7 +291,7 @@ function ReportIssue() {
                 className="mt-3 p-4 bg-blue-50 rounded-xl border-2 border-blue-200"
               >
                 <p className="text-sm text-blue-800">
-                  <span className="font-semibold">📍 Location:</span> {formData.location}
+                  <span className="font-semibold">⛯ Location:</span> {formData.location}
                 </p>
               </motion.div>
             )}
