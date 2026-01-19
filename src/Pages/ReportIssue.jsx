@@ -280,7 +280,7 @@ function ReportIssue() {
                 className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg hover:shadow-xl font-semibold flex items-center gap-2"
                 disabled={loadingLocation}
               >
-                <span className="text-xl" ⛯ </span>
+                <span className="text-xl"> ⛯ </span>
                 {loadingLocation ? "Fetching..." : "Use My Location"}
               </button>
             </div>
