@@ -369,7 +369,7 @@ export default function Home() {
             className="group relative bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden"
           >
             <span className="relative z-10 flex items-center justify-center gap-2 font-semibold text-lg">
-              🚀 Report an Issue
+               Report an Issue
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </Link>
@@ -379,7 +379,7 @@ export default function Home() {
             className="group relative bg-white text-gray-800 px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-gray-200 hover:border-blue-500"
           >
             <span className="flex items-center justify-center gap-2 font-semibold text-lg">
-              ⭐ Read Reviews
+               Read Reviews
             </span>
           </Link>
         </motion.div>
