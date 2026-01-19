@@ -392,8 +392,8 @@ export default function Home() {
           className="mt-16 grid grid-cols-3 gap-6 max-w-3xl mx-auto"
         >
           {[
-            { number: "1000+", label: "Issues Reported", icon: "📋" },
-            { number: "500+", label: "Active Citizens", icon: "👥" },
+            { number: "10+", label: "Issues Reported", icon: "📋" },
+            { number: "5+", label: "Active Citizens", icon: "👥" },
             { number: "95%", label: "Resolution Rate", icon: "✅" }
           ].map((stat, idx) => (
             <motion.div 
